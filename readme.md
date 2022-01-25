@@ -1,6 +1,6 @@
 <h1>Continuous Integration for Verification of Simulink® Models Using GitLab</h1>
 
-This project is used in the explanation of the Technical Article 'Continuous Integration for Verification of Simulink® Models Using GitLab®' to describe a simple end-to-end example showing Model Based Design integration into GitLab®. Upon following the steps in the Technical Article, one can setup a running Continuous Integration pipeline performing verify, build, test and package stages to generate corresponding artifacts.
+This project is used in the explanation of the Technical Article ['Continuous Integration for Verification of Simulink® Models Using GitLab®'](https://www.mathworks.com/company/newsletters/articles/continuous-integration-for-verification-of-simulink-models-using-gitlab.html) to describe a simple end-to-end example showing Model Based Design integration into GitLab®. Upon following the steps in the Technical Article, one can setup a running Continuous Integration pipeline performing verify, build, test and package stages to generate corresponding artifacts.
 
 
 
