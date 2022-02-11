@@ -65,7 +65,7 @@ classdef modelTestsAction
             obj.testRunner = TestRunner.withNoPlugins;
             parentFolder = fullfile(char(prj.RootFolder), 'Design', obj.modelName, 'pipeline', 'analyze');
             if ~exist(fullfile(parentFolder, 'testing'), 'dir')
-                mkdir([parentFolder, '\testing']);
+                mkdir(fullfile(parentFolder, 'testing'));
             end
             obj.resultsPath = fullfile(char(prj.RootFolder), 'Design', obj.modelName, 'pipeline', 'analyze', 'testing');
             delete(fullfile(obj.resultsPath, '*.tap'));
