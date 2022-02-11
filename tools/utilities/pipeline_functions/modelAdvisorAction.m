@@ -64,7 +64,7 @@ classdef modelAdvisorAction
             %creates specific subfolder for report
             parentFolder = fullfile(obj.prjRootFolder, 'Design', obj.modelName, 'pipeline', 'analyze');
             if ~exist(fullfile(parentFolder, 'verify'), 'dir')
-                mkdir([parentFolder, '\verify']);
+                mkdir(fullfile(parentFolder, 'verify'));
             end
             obj.rptPath = fullfile(obj.prjRootFolder, 'Design', obj.modelName, 'pipeline', 'analyze', 'verify');
             

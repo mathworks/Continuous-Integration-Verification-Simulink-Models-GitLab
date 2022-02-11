@@ -55,7 +55,7 @@ classdef modelBuildAction
             srcReportPath = fullfile(obj.cfg.CodeGenFolder,[obj.modelName '_ert_rtw'], 'html');
             parentFolder = fullfile(char(obj.prj.RootFolder), 'Design', obj.modelName, 'pipeline', 'analyze');
             if ~exist(fullfile(parentFolder, 'build'), 'dir')
-                mkdir([parentFolder, '\build']);
+                mkdir(fullfile(parentFolder, 'build'));
             end
             destReportPath = fullfile(char(obj.prj.RootFolder), 'Design', obj.modelName, 'pipeline', 'analyze', 'build');
             

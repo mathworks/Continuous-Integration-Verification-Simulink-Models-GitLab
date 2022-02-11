@@ -5,7 +5,7 @@ function generateHTMLReport(modelName)
   load(fullfile('Code','logsPath.mat'),'path');
   parentFolder = fullfile('Design', modelName, 'pipeline', 'analyze');
   if ~exist(fullfile(parentFolder, 'package'), 'dir')
-      mkdir([parentFolder, '\package']);
+      mkdir(fullfile(parentFolder, 'package'));
   end
   xslt(fullfile(path,'logs',[modelName 'Report.xml']), 'report.xsl', fullfile('Design',modelName,'pipeline','analyze', 'package', [modelName 'SummaryReport.html']));
 end

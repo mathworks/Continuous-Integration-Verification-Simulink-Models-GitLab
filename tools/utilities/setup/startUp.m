@@ -35,7 +35,7 @@ path = './Code';
 save ./Code/logsPath path;
 load(fullfile('Code','logsPath.mat'),'path');
 if ~exist(fullfile(path, 'logs'), 'dir')
-    mkdir([path,'/logs']);
+    mkdir(fullfile(path, 'logs'));
 end
 
 pauseTime = 1.5;
