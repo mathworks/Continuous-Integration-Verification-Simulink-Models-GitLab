@@ -1,0 +1,68 @@
+#Copyright 2021 The MathWorks, Inc.
+
+# defining the stages
+stages:
+  - Child pipelines
+
+# if the logs path is changed in startup.m (to store the generated logs during pipeline execution), then change it here as well
+# as this path ensures that logs are stored as artifacts upto package stage and then HTML Summary report is generated using them
+variables:
+  LOGS_PATH: "./Code"
+  ARTIFACTS_DOWNLOAD_PATH: "C:/Users/$GITLAB_USER_LOGIN/Downloads"
+
+# Defining the child pipelines: each one for one of the model references
+# These child pipelines are triggered only when there is a change to any files/folders mentioned in the 'rules' path of the jobs
+driverSwRequest_pipeline:
+  stage: Child pipelines
+  trigger:
+    include: .driverSwRequest-gitlab-ci.yml
+    strategy: depend
+  rules:
+     - changes:
+        - Design/DriverSwRequest/**/*
+        - .driverSwRequest-gitlab-ci.yml
+        - .gitlab-ci.yml
+        - tools/**/*
+
+cruiseControlMode_pipeline:
+   stage: Child pipelines
+   trigger:
+     include: .cruiseControlMode-gitlab-ci.yml
+     strategy: depend
+   rules:
+     - changes:
+       - Design/CruiseControlMode/**/*
+       - .cruiseControlMode-gitlab-ci.yml
+       - .gitlab-ci.yml
+       - tools/**/*
+
+targetSpeedThrottle_pipeline:
+   stage: Child pipelines
+   trigger:
+     include: .targetSpeedThrottle-gitlab-ci.yml
+     strategy: depend
+   rules:
+     - changes:
+       - Design/TargetSpeedThrottle/**/*
+       - .targetSpeedThrottle-gitlab-ci.yml
+       - .gitlab-ci.yml
+       - tools/**/*
+
+crs_controller_pipeline:
+   stage: Child pipelines
+   trigger:
+     include: .crs_controller-gitlab-ci.yml
+     strategy: depend
+   rules:
+     - changes:
+       - Design/crs_controller/**/*
+       - .crs_controller-gitlab-ci.yml
+       - .gitlab-ci.yml
+       - tools/**/*
+
+
+
+
+
+
+

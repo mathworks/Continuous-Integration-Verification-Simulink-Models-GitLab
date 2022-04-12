@@ -1,0 +1,86 @@
+#Copyright 2021 The MathWorks, Inc.
+
+# This .yml file corresponds to the child pipeline for the TargetSpeedThrottle model
+
+# defining the stages
+stages:
+  - verify
+  - build
+  - testing
+  - package
+  - Deploy
+
+# This job executes the Model Advisor Checks file for DriverSwRequest model
+TargetSpeedThrottleMA:
+  stage: verify
+  tags:
+    - testci
+  script:
+    - matlab -nodesktop -batch "openProject('CruiseControlExample.prj'); TargetSpeedThrottleModelAdvisor;"
+  artifacts:
+    when: always
+    paths:
+      - ./Design/TargetSpeedThrottle/pipeline/analyze/**/*
+      - $LOGS_PATH/logs/
+
+# This job performs code generation on the model
+TargetSpeedThrottleBuild:
+  stage: build
+  tags:
+    - testci
+  script:
+    - matlab -nodesktop -batch "openProject('CruiseControlExample.prj'); TargetSpeedThrottleBuild;"
+  artifacts:
+    when: always
+    paths:
+      - ./Code/codegen/TargetSpeedThrottle_ert_rtw
+      - ./Design/TargetSpeedThrottle/pipeline/analyze/**/*
+      - $LOGS_PATH/logs/
+
+# This job executes the unit tests defined in the collection
+TargetSpeedThrottleTest:
+  stage: testing
+  tags:
+    - testci
+  script:
+    - matlab -nodesktop -batch "openProject('CruiseControlExample.prj'); TargetSpeedThrottleTest;"
+  artifacts:
+    when: always
+    paths:
+      - $LOGS_PATH/logs/
+      - ./Design/TargetSpeedThrottle/pipeline/analyze/**/*
+      - ./Code/codegen/TargetSpeedThrottle_ert_rtw
+    reports:
+      junit: ./Design/TargetSpeedThrottle/pipeline/analyze/testing/TargetSpeedThrottleJUnitFormatTestResults.xml
+
+
+# The summary report is generated which shows results from the previous stages. Any logs that were generated in the previous stages will be cleared after this stage
+TargetSpeedThrottlePackage:
+  stage: package
+  tags:
+    - testci
+  script:
+    - echo "The model TargetSpeedThrottle has been checked"
+    - echo "There is a Summary report generated targetSpeedThrottleReport.html "
+    - matlab -nodesktop -batch "openProject('CruiseControlExample.prj'); generateXMLFromLogs('TargetSpeedThrottle'); generateHTMLReport('TargetSpeedThrottle'); deleteLogs;"
+  artifacts:
+    when: always
+    paths:
+      - ./Design/TargetSpeedThrottle/pipeline/analyze/**/*
+      - ./Code/codegen/TargetSpeedThrottle_ert_rtw
+
+# a stage to assert that all stages in this child pipeline have passed successfully.
+# a deploy stage placeholder where all the artifacts are available for download
+TargetSpeedThrottleDeploy:
+  stage: Deploy
+  tags:
+    - testci
+  script:
+    - echo "Any deployments of code can be made here"
+    - echo "All artifacts of previous stage can be found here"
+    - 'curl.exe --location --output "$ARTIFACTS_DOWNLOAD_PATH/TargetSpeedThrottleArtifacts.zip" --header "PRIVATE-TOKEN: $CIPROJECTTOKEN" "$CI_SERVER_URL/api/v4/projects/$CI_PROJECT_ID/jobs/artifacts/$CI_COMMIT_BRANCH/download?job=TargetSpeedThrottlePackage"'
+  artifacts:
+    when: always
+    paths:
+      - ./Design/TargetSpeedThrottle/pipeline/analyze/**/*
+      - ./Code/codegen/TargetSpeedThrottle_ert_rtw

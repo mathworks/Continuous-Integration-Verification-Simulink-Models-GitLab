@@ -1,0 +1,85 @@
+#Copyright 2021 The MathWorks, Inc.
+# This .yml file corresponds to the child pipeline for the Crs_Controller model
+
+# defining the stages
+stages:
+  - verify
+  - build
+  - testing
+  - package
+  - Deploy
+
+# This job executes the Model Advisor Checks for the model
+Crs_ControllerMA:
+  stage: verify
+  tags:
+    - testci
+  script:
+    - matlab -nodesktop -batch "openProject('CruiseControlExample.prj'); crs_controllerModelAdvisor;"
+  artifacts:
+    when: always
+    paths:
+      - $LOGS_PATH/logs/
+      - ./Design/crs_controller/pipeline/analyze/**/*
+
+# This job performs code generation on the model
+Crs_ControllerBuild:
+  stage: build
+  tags:
+    - testci
+  script:
+    - matlab -nodesktop -batch "openProject('CruiseControlExample.prj'); crs_controllerBuild;"
+  artifacts:
+    when: always
+    paths:
+      - ./Code/codegen/crs_controller_ert_rtw
+      - ./Design/crs_controller/pipeline/analyze/**/*
+      - $LOGS_PATH/logs/
+
+
+# This job executes the functional tests defined in the collection
+Crs_ControllerTest:
+  stage: testing
+  tags:
+    - testci
+  script:
+    - matlab -nodesktop -batch "openProject('CruiseControlExample.prj'); crs_controllerTestFile;"
+  artifacts:
+    when: always
+    paths:
+      - $LOGS_PATH/logs/
+      - ./Design/crs_controller/pipeline/analyze/**/*
+      - ./Code/codegen/crs_controller_ert_rtw
+    reports:
+      junit: ./Design/crs_controller/pipeline/analyze/testing/crs_controllerJUnitFormatTestResults.xml
+
+# The summary report is generated which shows results from the previous stages. Any logs that were generated in the previous stages will be cleared after this stage
+Crs_ControllerPackage:
+  stage: package
+  tags:
+    - testci
+  script:
+    - echo "The model crs_controller has been checked"
+    - echo "There is a Summary report generated crs_controllerReport.html "
+    - matlab -nodesktop -batch "openProject('CruiseControlExample.prj'); generateXMLFromLogs('crs_controller'); generateHTMLReport('crs_controller'); deleteLogs;"
+  artifacts:
+    when: always
+    paths:
+      - ./Design/crs_controller/pipeline/analyze/**/*
+      - ./Code/codegen/crs_controller_ert_rtw
+
+# a stage to assert that all stages in this child pipeline have passed successfully.
+# a deploy stage placeholder where all the artifacts are available for download
+Crs_ControllerDeploy:
+  stage: Deploy
+  tags:
+    - testci
+  script:
+    - echo "Any deployments of code can be made here"
+    - echo "All artifacts of previous stage can be found here"
+    - 'curl.exe --location --output "$ARTIFACTS_DOWNLOAD_PATH/Crs_ControllerArtifacts.zip" --header "PRIVATE-TOKEN: $CIPROJECTTOKEN" "$CI_SERVER_URL/api/v4/projects/$CI_PROJECT_ID/jobs/artifacts/$CI_COMMIT_BRANCH/download?job=Crs_ControllerPackage"'
+  artifacts:
+    when: always
+    paths:
+      - ./Design/crs_controller/pipeline/analyze/**/*
+      - ./Code/codegen/crs_controller_ert_rtw
