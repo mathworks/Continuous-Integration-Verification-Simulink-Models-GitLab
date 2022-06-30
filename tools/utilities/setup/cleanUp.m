@@ -39,6 +39,12 @@ if isfolder(myCacheFolder)
     end
 end
 
+rmpath(fullfile(projectRoot, 'Code'));
+rmpath(fullfile(projectRoot, 'Design', 'crs_controller', 'pipeline', 'analyze'));
+rmpath(fullfile(projectRoot, 'Design', 'CruiseControlMode', 'pipeline', 'analyze'));
+rmpath(fullfile(projectRoot, 'Design', 'DriverSwRequest', 'pipeline', 'analyze'));
+rmpath(fullfile(projectRoot, 'Design', 'TargetSpeedThrottle', 'pipeline', 'analyze'));
+
 Simulink.fileGenControl('reset')
 
 pauseTime = 1.5;
