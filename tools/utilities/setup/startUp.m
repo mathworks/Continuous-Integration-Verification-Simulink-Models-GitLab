@@ -22,6 +22,22 @@ myCacheFolder   = fullfile(myCodeFolder, 'cache');
 myProject.SimulinkCacheFolder   = myCacheFolder;
 myProject.SimulinkCodeGenFolder = myCodeGenFolder;
 
+mkdir(fullfile(projectRoot, 'Code'));
+addpath(fullfile(projectRoot, 'Code'));
+addFile(currentProject,'Code\');
+
+mkdir(fullfile(projectRoot, 'Design', 'crs_controller', 'pipeline', 'analyze'));
+addpath(fullfile(projectRoot, 'Design', 'crs_controller', 'pipeline', 'analyze'));
+
+mkdir(fullfile(projectRoot, 'Design', 'CruiseControlMode', 'pipeline', 'analyze'));
+addpath(fullfile(projectRoot, 'Design', 'CruiseControlMode', 'pipeline', 'analyze'));
+
+mkdir(fullfile(projectRoot, 'Design', 'DriverSwRequest', 'pipeline', 'analyze'));
+addpath(fullfile(projectRoot, 'Design', 'DriverSwRequest', 'pipeline', 'analyze'));
+
+mkdir(fullfile(projectRoot, 'Design', 'TargetSpeedThrottle', 'pipeline', 'analyze'));
+addpath(fullfile(projectRoot, 'Design', 'TargetSpeedThrottle', 'pipeline', 'analyze'));
+
 Simulink.fileGenControl('set',...
     'CacheFolder', myCacheFolder,...
     'CodeGenFolder', myCodeGenFolder,...
