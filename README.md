@@ -108,7 +108,7 @@ This project works on MATLAB 2020b, 2021a.
 - [Simulink® Check™](https://www.mathworks.com/products/simulink-check.html)
 - [Simulink® Coder™](https://www.mathworks.com/products/simulink-coder.html)
 - [Simulink® Coverage™](https://www.mathworks.com/products/simulink-coverage.html)
-- [Requirements Toolbox™](https://www.mathworks.com/products/requirements-toolbox.html)
+- [Simulink Requirements™](https://www.mathworks.com/products/requirements-toolbox.html)
 - [Simulink® Test™](https://www.mathworks.com/products/simulink-test.html)
 - [Stateflow®](https://www.mathworks.com/products/stateflow.html)
 - [Supported and Compatible Compilers](https://www.mathworks.com/support/requirements/supported-compilers.html)
